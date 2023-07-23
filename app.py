@@ -1,39 +1,55 @@
-# Import packages
-from dash import Dash, html, dash_table, dcc, callback, Output, Input #DCC stands for Dash Core Components
-import pandas as pd
-import plotly.express as px
+from dash import Dash, html, dcc, register_page, callback,Output,Input
+import dash
+
+app = Dash(__name__, use_pages=True)
 
 
+@app.server.route('/static/<path:path>')
+def static_file(path):
+    static_folder = os.path.join(os.getcwd(), 'static')
+    return send_from_directory(static_folder, path)
 
-# Initialize the app
-app = Dash(__name__)
-# Run the app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-
-# Incorporate data
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
-
-# App layout
 app.layout = html.Div([
-    html.Div(children='My First App with Data, Graph, and Controls'),
-    html.Hr(),
-    dcc.RadioItems(options=['pop', 'lifeExp', 'gdpPercap'], value='lifeExp', id='controls-and-radio-item'),
-    dash_table.DataTable(data=df.to_dict('records'), page_size=3),
-    # We can provide  static/dynamic graph in figure
-    dcc.Graph(figure={}, id='controls-and-graph')
-    #dcc.Graph(figure=px.histogram(df, x='continent', y='lifeExp', histfunc='avg'))
+
+    # The memory store reverts to the default on every page refresh
+    dcc.Store(id='memory'),
+    # The local store will take the initial data
+    # only the first time the page is loaded
+    # and keep it until it is cleared.
+    dcc.Store(id='local', storage_type='local'),
+    # Same as the local store but will lose the data
+    # when the browser/tab closes.
+    dcc.Store(id='session', storage_type='session'),
+        html.Link(
+        rel='stylesheet',
+        href='/static/MyStylesheet1.css'
+    ),
+    
+    html.Div( children = 
+        [
+            html.Div( className='topnav',children=[
+                dcc.Link(
+                    f"{page['name']}", href=page["relative_path"]
+                )]
+            )
+            for page in dash.page_registry.values()
+            
+        ]
+    ), 
+    html.Div(style= {'display': 'inline-block'},children = [html.H3(id='user_label')]),
+	dash.page_container,
+    html.Footer(className = 'topnav',children=[html.H5('This is footer')])
 ])
 
-# Add controls to build the interaction
-@callback(
-    Output(component_id='controls-and-graph', component_property='figure'),
-    Input(component_id= 'controls-and-radio-item', component_property='value')
-)
-def update_graph(col_chosen): 
-    fig = px.histogram(df, x='continent', y=col_chosen, histfunc='avg')
-    return fig
 
 
+@callback(Output('user_label', 'children'), Input('session', 'data'))
+def update_label(data):
+    return f"This is Session Variable -  {data.get('username')}"
+
+
+
+
+
+if __name__ == '__main__':
+	app.run(debug=True)
