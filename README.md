@@ -13,3 +13,7 @@ python3 -m venv venv
 Create first app - https://dash.plotly.com/minimal-app
 <br>Wrap FastAPI around dash - https://github.com/rusnyder/fastapi-plotly-dash
 <br>Deployment on EC2 Ubuntu 22 - https://github.com/dylanjcastillo/fastapi-nginx-gunicorn
+
+
+# Deployment Steps - 
+--- Write steps here ---
