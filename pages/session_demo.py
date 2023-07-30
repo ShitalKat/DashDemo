@@ -6,10 +6,9 @@ import dash
 
 register_page(
     __name__,
-    path='/name',
-    title='Name',
-    name='Name',
-    order = 1
+    path='/session_demo',
+    title='Session Demo',
+    name='Session Demo'
 
 )
 
@@ -21,7 +20,7 @@ layout = html.Div([
     html.Div(children=[
 
     html.Div(children='''
-        Enter Your Name to save in session : 
+        Enter Any value to save in session : 
     '''),
     dcc.Input(id="input_name", type="text", placeholder="Name", style={'marginRight':'10px'}),
     html.Button('Submit', id='submit-val', n_clicks=0)
@@ -30,15 +29,15 @@ layout = html.Div([
 ])
 
 @callback(
-    Output('session', 'data'),
+    Output('local', 'data'),
     Input('submit-val', 'n_clicks'),
     State('input_name', 'value'),
-    State('session', 'data')
+    State('local', 'data')
 )
 def update_session_and_navigate(n_clicks, value,data):
         data = data or {}
         if value:
-            data['username'] = value
+            data['session_demo'] = data.get('session_demo','') + value + ' '
         return data
 
 

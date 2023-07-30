@@ -5,9 +5,9 @@ import plotly.express as px
 register_page(
     __name__,
     path='/sample',
-    title='Our Sample Page',
-    name='Our Sample Page',
-    order=1
+    title='Sample Page',
+    name='Sample Page',
+    order=2
 )
 
 # Incorporate data

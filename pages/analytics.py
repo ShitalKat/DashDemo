@@ -5,8 +5,8 @@ from dash import html, dcc, callback, Input, Output
 dash.register_page(
     __name__,
     path='/analytics',
-    title='Our Analytics Page',
-    name='Our Analytics Page'
+    title='Analytics Page',
+    name='Analytics Page'
 )
 
 layout = html.Div(children=[

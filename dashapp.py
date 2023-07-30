@@ -12,14 +12,12 @@ def create_dash_app(requests_pathname_prefix: str = None) -> dash.Dash:
     server.secret_key = os.environ.get('secret_key', 'secret')
     dash_app = dash.Dash(__name__,use_pages=True, server=server, requests_pathname_prefix=requests_pathname_prefix)
 
-    @dash_app.server.route('/static/<path:path>')
-    def static_file(path):
-        static_folder = os.path.join(os.getcwd(), 'static')
-        return send_from_directory(static_folder, path)
     
-    @callback(Output('user_label', 'children'), Input('session', 'data'))
+    @callback(Output('session_demo_label', 'children'), Input('local', 'data'))
     def update_label(data):
-        return f"This is Session Variable -  {data.get('username')}"
+        if data:
+            return f"This is Session Variable -  {data.get('session_demo')}"
+        else: return "No value in session"
     
     dash_app.layout = html.Div([
 
@@ -28,10 +26,10 @@ def create_dash_app(requests_pathname_prefix: str = None) -> dash.Dash:
     # The local store will take the initial data
     # only the first time the page is loaded
     # and keep it until it is cleared.
-    dcc.Store(id='local', storage_type='local'),
+    dcc.Store(id='local', storage_type='local'), #across multiple tab
     # Same as the local store but will lose the data
     # when the browser/tab closes.
-    dcc.Store(id='session', storage_type='session'),
+    dcc.Store(id='session', storage_type='session'), #limited for single tab
         html.Link(
         rel='stylesheet',
         href='/static/MyStylesheet1.css'
@@ -48,9 +46,9 @@ def create_dash_app(requests_pathname_prefix: str = None) -> dash.Dash:
             
         ]
     ), 
-    html.Div(style= {'display': 'inline-block'},children = [html.H3(id='user_label')]),
+    #html.Div(style= {'display': 'inline-block'},children = [html.H3(id='session_demo_label')]),
 	dash.page_container,
-    html.Footer(className = 'topnav',children=[html.H5('This is footer')])
+    html.Footer(className = 'footer',children=[html.P(id='session_demo_label')])
     ])
     return dash_app
 

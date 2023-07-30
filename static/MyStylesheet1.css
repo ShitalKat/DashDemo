@@ -420,6 +420,7 @@ there.
   
   background-color: #0FA0CE;
   display: inline-block;
+  
 }
 
 .topnav a {
@@ -438,5 +439,16 @@ there.
 
 .topnav a.active {
   background-color: #0FA0CE ;
+  color: white;
+}
+
+
+.footer {
+  
+  background-color: #0FA0CE;
+  display: inline-block;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   color: white;
 }

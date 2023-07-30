@@ -5,8 +5,8 @@ from dash import html, dcc
 dash.register_page(
     __name__,
     path='/archive',
-    title='Our Archive',
-    name='Our Archive',
+    title='Archive',
+    name='Archive',
     redirect_from=["/archive2021", "/archive2020"] # If user goes to this page, he will redirect to /archive page
 )
 
