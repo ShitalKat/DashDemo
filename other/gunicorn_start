@@ -1,0 +1,25 @@
+#!/bin/bash
+
+NAME=dashdemo-app
+DIR=/home/ubuntu/projects/DashDemo
+USER=ubuntu
+GROUP=ubuntu
+WORKERS=3
+WORKER_CLASS=uvicorn.workers.UvicornWorker
+VENV=$DIR/venv/bin/activate
+BIND=unix:$DIR/run/gunicorn.sock
+LOG_LEVEL=debug
+
+cd $DIR
+source $VENV
+echo "Starting $NAME as `whoami`"
+
+exec gunicorn -b $BIND  -w $WORKERS -k uvicorn.workers.UvicornWorker main:app \
+  --name $NAME \
+  --user=$USER \
+  --group=$GROUP \
+  --log-level=$LOG_LEVEL \
+  --log-file=-
+#  --workers $WORKERS \
+#  --worker-class $WORKER_CLASS \
+#  --bind=0.0.0.0:5000 \
