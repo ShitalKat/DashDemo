@@ -1,55 +1,25 @@
 from dash import Dash, html, dcc, register_page, callback,Output,Input
 import dash
+from dashapp import create_dash_app
+from fastapi import FastAPI
+from fastapi.middleware.wsgi import WSGIMiddleware
+import uvicorn
 
-app = Dash(__name__, use_pages=True)
+app = FastAPI()
 
+#myapp = dash_app
 
-@app.server.route('/static/<path:path>')
-def static_file(path):
-    static_folder = os.path.join(os.getcwd(), 'static')
-    return send_from_directory(static_folder, path)
+mydashapp = create_dash_app(requests_pathname_prefix="/")
+app.mount("/", WSGIMiddleware(mydashapp.server))
 
-app.layout = html.Div([
+from flask import send_from_directory
 
-    # The memory store reverts to the default on every page refresh
-    dcc.Store(id='memory'),
-    # The local store will take the initial data
-    # only the first time the page is loaded
-    # and keep it until it is cleared.
-    dcc.Store(id='local', storage_type='local'),
-    # Same as the local store but will lose the data
-    # when the browser/tab closes.
-    dcc.Store(id='session', storage_type='session'),
-        html.Link(
-        rel='stylesheet',
-        href='/static/MyStylesheet1.css'
-    ),
-    
-    html.Div( children = 
-        [
-            html.Div( className='topnav',children=[
-                dcc.Link(
-                    f"{page['name']}", href=page["relative_path"]
-                )]
-            )
-            for page in dash.page_registry.values()
-            
-        ]
-    ), 
-    html.Div(style= {'display': 'inline-block'},children = [html.H3(id='user_label')]),
-	dash.page_container,
-    html.Footer(className = 'topnav',children=[html.H5('This is footer')])
-])
-
-
-
-@callback(Output('user_label', 'children'), Input('session', 'data'))
-def update_label(data):
-    return f"This is Session Variable -  {data.get('username')}"
-
-
-
+#@app.route('/static/<path:path>')
+#def static_file(path):
+#    static_folder = os.path.join(os.getcwd(), 'static')
+#    return send_from_directory(static_folder, path)
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	#app.run(debug=True)
+	uvicorn.run(app, port=8000)
