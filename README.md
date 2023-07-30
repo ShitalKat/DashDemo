@@ -1,3 +1,5 @@
+Site - 54.252.68.234
+
 # Tech
 OS - Ubuntu 22
 Python - 3.9
