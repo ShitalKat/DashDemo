@@ -1,4 +1,6 @@
 dash==2.11.1
 pandas==2.0.3
-uvicorn==0.23.1
 Flask==2.2.5
+fastapi==0.89.1
+gunicorn==20.1.0
+uvicorn[standard]==0.20.0

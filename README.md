@@ -3,7 +3,7 @@ View Site on - http://54.252.68.234/
 
 # Tech Stack
 * Operating System - Ubuntu 22
-* Language - Python - 3.9
+* Language - Python - 3.11
 * <b>Dash</b>  - A python framework created by plotly for creating interactive web applications. Dash is written on the top of Flask, Plotly. js and React.
 * <b>FastAPI</b> - It is one of the most popular Python frameworks for building APIs.
 * <b>Gunicorn</b>  - It is a popular web server used to deploy Python web apps. Typically, it's used as a WSGI server, but it's possible to combine it with Uvicorn to work as an ASGI server.
